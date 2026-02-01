@@ -2,7 +2,7 @@
 builder = "DOCKERFILE"
 
 [deploy]
-healthcheckPath = "/health"
-healthcheckTimeout = 15
+healthcheckPath = "/"
+healthcheckTimeout = 30
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
