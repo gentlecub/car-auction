@@ -1,0 +1,24 @@
+# ============================================
+# CarAuction Backend - Development Dockerfile
+# Hot reload enabled for development
+# ============================================
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /app
+
+# Install EF Core tools
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+# Expose ports (HTTP and HTTPS)
+EXPOSE 5000
+EXPOSE 5001
+
+# Environment variables for development
+ENV ASPNETCORE_URLS=http://+:5000
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=1
+ENV DOTNET_WATCH_RESTART_ON_RUDE_EDIT=1
+
+# Default command with hot reload
+ENTRYPOINT ["dotnet", "watch", "run", "--project", "src/CarAuction.API/CarAuction.API.csproj", "--no-launch-profile"]

@@ -1,0 +1,68 @@
+# ============================================
+# CarAuction Backend - Docker Ignore
+# ============================================
+
+# Git
+**/.git
+**/.gitignore
+**/.gitattributes
+
+# IDE
+**/.vs
+**/.vscode
+**/.idea
+**/*.user
+**/*.suo
+
+# Build outputs
+**/bin
+**/obj
+**/out
+**/publish
+
+# Dependencies
+**/node_modules
+
+# Environment files (security)
+**/.env
+**/.env.*
+!.env.example
+
+# Docker files (not needed in build context)
+**/Dockerfile*
+**/docker-compose*
+**/.docker
+
+# Documentation
+**/*.md
+**/docs
+
+# Tests
+**/tests
+**/*.Tests
+**/TestResults
+**/coverage
+
+# Logs
+**/*.log
+**/logs
+
+# Temporary files
+**/tmp
+**/temp
+**/.tmp
+
+# OS files
+**/.DS_Store
+**/Thumbs.db
+
+# Nginx config (copied separately)
+**/nginx
+
+# Scripts (copied separately)
+**/scripts
+
+# Misc
+**/*.swp
+**/*.bak
+**/*~

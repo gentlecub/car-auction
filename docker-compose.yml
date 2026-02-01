@@ -1,0 +1,128 @@
+# ============================================
+# CarAuction - Docker Compose (Full Stack)
+# Usage: docker-compose up -d
+# ============================================
+version: '3.8'
+
+services:
+  # ============================================
+  # Frontend - React + Nginx
+  # ============================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:5000/api}
+        VITE_WS_URL: ${VITE_WS_URL:-ws://localhost:5000/hubs/auction}
+    container_name: carauction-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - carauction-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ============================================
+  # API Backend - ASP.NET Core 8
+  # ============================================
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: carauction-api
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Production}
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=carauction;User=carauction;Password=${MYSQL_PASSWORD:-devpass123};CharSet=utf8mb4;
+      - JwtSettings__SecretKey=${JWT_SECRET_KEY:-dev-secret-key-minimum-32-characters-here}
+      - JwtSettings__Issuer=${JWT_ISSUER:-CarAuction}
+      - JwtSettings__Audience=${JWT_AUDIENCE:-CarAuctionClient}
+      - JwtSettings__AccessTokenExpirationMinutes=${JWT_ACCESS_EXPIRATION:-60}
+      - JwtSettings__RefreshTokenExpirationDays=${JWT_REFRESH_EXPIRATION:-7}
+      - Redis__ConnectionString=redis:6379
+      - Cors__Origins=${CORS_ORIGINS:-http://localhost:3000,http://localhost:5173}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - carauction-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ============================================
+  # MySQL Database
+  # ============================================
+  mysql:
+    image: mysql:8.0
+    container_name: carauction-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass123}
+      MYSQL_DATABASE: carauction
+      MYSQL_USER: carauction
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-devpass123}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - carauction-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+
+  # ============================================
+  # Redis Cache
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: carauction-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - carauction-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+
+# ============================================
+# Volumes
+# ============================================
+volumes:
+  mysql-data:
+    driver: local
+  redis-data:
+    driver: local
+
+# ============================================
+# Networks
+# ============================================
+networks:
+  carauction-network:
+    driver: bridge

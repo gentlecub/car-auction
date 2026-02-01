@@ -1,0 +1,91 @@
+# ============================================
+# CarAuction - Docker Compose (Development)
+# Usage: docker-compose -f docker-compose.dev.yml up -d
+# ============================================
+version: '3.8'
+
+services:
+  # ============================================
+  # Frontend - Vite Dev Server (Hot Reload)
+  # ============================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: carauction-frontend-dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src:ro
+      - ./frontend/public:/app/public:ro
+      - ./frontend/index.html:/app/index.html:ro
+    environment:
+      - VITE_API_URL=http://localhost:5000/api
+      - VITE_WS_URL=ws://localhost:5000/hubs/auction
+      - VITE_ENV=development
+    networks:
+      - carauction-dev
+    restart: unless-stopped
+
+  # ============================================
+  # API Backend - Dev Mode
+  # ============================================
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: carauction-api-dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend/src:/src/src:ro
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=carauction;User=carauction;Password=devpass123;
+      - JwtSettings__SecretKey=dev-secret-key-minimum-32-characters-here
+      - Redis__ConnectionString=redis:6379
+      - Cors__Origins=http://localhost:5173,http://localhost:3000
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - carauction-dev
+    restart: unless-stopped
+
+  # ============================================
+  # MySQL Database
+  # ============================================
+  mysql:
+    image: mysql:8.0
+    container_name: carauction-mysql-dev
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass123
+      MYSQL_DATABASE: carauction
+      MYSQL_USER: carauction
+      MYSQL_PASSWORD: devpass123
+    volumes:
+      - mysql-dev-data:/var/lib/mysql
+    networks:
+      - carauction-dev
+    restart: unless-stopped
+
+  # ============================================
+  # Redis Cache
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: carauction-redis-dev
+    ports:
+      - "6379:6379"
+    networks:
+      - carauction-dev
+    restart: unless-stopped
+
+volumes:
+  mysql-dev-data:
+
+networks:
+  carauction-dev:
+    driver: bridge

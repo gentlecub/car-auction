@@ -1,0 +1,297 @@
+# ============================================
+# CD Pipeline - Full Stack Deployment
+# ============================================
+name: CD Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'docker-compose*.yml'
+      - '.github/workflows/cd-deploy.yml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      components:
+        description: 'Components to deploy'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - frontend
+          - backend
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository }}
+
+jobs:
+  # ============================================
+  # DETERMINE CHANGES
+  # ============================================
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+            backend:
+              - 'backend/**'
+
+  # ============================================
+  # BUILD & PUSH FRONTEND
+  # ============================================
+  build-frontend:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    needs: changes
+    if: |
+      needs.changes.outputs.frontend == 'true' ||
+      github.event.inputs.components == 'all' ||
+      github.event.inputs.components == 'frontend'
+    permissions:
+      contents: read
+      packages: write
+
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/frontend
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VITE_API_URL=${{ vars.VITE_API_URL }}
+            VITE_WS_URL=${{ vars.VITE_WS_URL }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ============================================
+  # BUILD & PUSH BACKEND
+  # ============================================
+  build-backend:
+    name: Build Backend
+    runs-on: ubuntu-latest
+    needs: changes
+    if: |
+      needs.changes.outputs.backend == 'true' ||
+      github.event.inputs.components == 'all' ||
+      github.event.inputs.components == 'backend'
+    permissions:
+      contents: read
+      packages: write
+
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/api
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ============================================
+  # DEPLOY TO STAGING
+  # ============================================
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build-frontend, build-backend]
+    if: |
+      always() &&
+      (needs.build-frontend.result == 'success' || needs.build-frontend.result == 'skipped') &&
+      (needs.build-backend.result == 'success' || needs.build-backend.result == 'skipped') &&
+      (github.ref == 'refs/heads/main' || github.event.inputs.environment == 'staging')
+    environment:
+      name: staging
+      url: https://staging.carauction.com
+
+    steps:
+      - name: Deploy to Staging Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          script: |
+            cd /opt/carauction
+
+            echo "=== Pulling latest images ==="
+            docker-compose pull
+
+            echo "=== Deploying services ==="
+            docker-compose up -d --remove-orphans
+
+            echo "=== Cleanup old images ==="
+            docker image prune -f
+
+            echo "=== Deployment completed at $(date) ==="
+
+      - name: Health Check - API
+        run: |
+          echo "Waiting for services to start..."
+          sleep 30
+          curl -f ${{ vars.STAGING_API_URL }}/health || echo "API health check failed"
+        continue-on-error: true
+
+      - name: Health Check - Frontend
+        run: |
+          curl -f ${{ vars.STAGING_FRONTEND_URL }} || echo "Frontend health check failed"
+        continue-on-error: true
+
+      - name: Notify Success
+        if: success()
+        run: |
+          echo "✅ Staging deployment successful!"
+          echo "API: ${{ vars.STAGING_API_URL }}"
+          echo "Frontend: ${{ vars.STAGING_FRONTEND_URL }}"
+
+  # ============================================
+  # DEPLOY TO PRODUCTION
+  # ============================================
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: github.event.inputs.environment == 'production'
+    environment:
+      name: production
+      url: https://carauction.com
+
+    steps:
+      - name: Pre-deployment Backup
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            cd /opt/carauction
+
+            echo "=== Creating database backup ==="
+            BACKUP_FILE="backup_$(date +%Y%m%d_%H%M%S).sql"
+            docker-compose exec -T mysql mysqldump -u root -p${MYSQL_ROOT_PASSWORD} carauction > /opt/backups/$BACKUP_FILE
+            echo "Backup created: $BACKUP_FILE"
+
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            cd /opt/carauction
+
+            echo "=== Pulling latest images ==="
+            docker-compose pull
+
+            echo "=== Deploying with zero-downtime ==="
+            docker-compose up -d --no-deps --scale api=2 api
+            sleep 30
+            docker-compose up -d --no-deps --scale api=1 api
+
+            docker-compose up -d --no-deps frontend
+
+            echo "=== Cleanup ==="
+            docker image prune -f
+
+            echo "=== Production deployment completed at $(date) ==="
+
+      - name: Health Check
+        run: |
+          sleep 30
+          curl -f https://carauction.com/health || exit 1
+          curl -f https://api.carauction.com/health || exit 1
+
+      - name: Notify Success
+        if: success()
+        run: |
+          echo "✅ Production deployment successful!"
+          echo "Commit: ${{ github.sha }}"
+          echo "Deployed at: $(date)"
+
+      - name: Notify Failure
+        if: failure()
+        run: |
+          echo "❌ Production deployment FAILED!"
+          echo "Manual intervention may be required."
+          echo "Check rollback procedures in docs/QA-PRODUCTION-READY.md"

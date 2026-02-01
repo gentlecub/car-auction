@@ -1,0 +1,127 @@
+version: '3.8'
+
+# ============================================
+# Development Environment
+# Usage: docker-compose -f docker-compose.dev.yml up -d
+# ============================================
+
+services:
+  # ============================================
+  # API with Hot Reload
+  # ============================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: carauction-api-dev
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=carauction_dev;User=root;Password=devpassword;CharSet=utf8mb4;
+      - JwtSettings__SecretKey=dev-secret-key-minimum-32-characters-long-for-testing
+      - JwtSettings__Issuer=CarAuction
+      - JwtSettings__Audience=CarAuctionClient
+      - JwtSettings__AccessTokenExpirationMinutes=60
+      - JwtSettings__RefreshTokenExpirationDays=7
+      - Cors__Origins=http://localhost:5173,http://localhost:3000
+    volumes:
+      - .:/app
+      - /app/src/CarAuction.API/bin
+      - /app/src/CarAuction.API/obj
+      - /app/src/CarAuction.Domain/bin
+      - /app/src/CarAuction.Domain/obj
+      - /app/src/CarAuction.Application/bin
+      - /app/src/CarAuction.Application/obj
+      - /app/src/CarAuction.Infrastructure/bin
+      - /app/src/CarAuction.Infrastructure/obj
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - carauction-dev
+    stdin_open: true
+    tty: true
+
+  # ============================================
+  # MySQL Database (Development)
+  # ============================================
+  mysql:
+    image: mysql:8.0
+    container_name: carauction-mysql-dev
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=devpassword
+      - MYSQL_DATABASE=carauction_dev
+    volumes:
+      - mysql-dev-data:/var/lib/mysql
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    networks:
+      - carauction-dev
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pdevpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+
+  # ============================================
+  # Adminer (Database GUI)
+  # ============================================
+  adminer:
+    image: adminer:latest
+    container_name: carauction-adminer
+    ports:
+      - "8080:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=mysql
+    networks:
+      - carauction-dev
+    depends_on:
+      - mysql
+
+  # ============================================
+  # Redis (Development)
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: carauction-redis-dev
+    ports:
+      - "6379:6379"
+    networks:
+      - carauction-dev
+
+  # ============================================
+  # Redis Commander (Redis GUI)
+  # ============================================
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: carauction-redis-commander
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    networks:
+      - carauction-dev
+    depends_on:
+      - redis
+
+# ============================================
+# Volumes
+# ============================================
+volumes:
+  mysql-dev-data:
+    driver: local
+
+# ============================================
+# Networks
+# ============================================
+networks:
+  carauction-dev:
+    driver: bridge

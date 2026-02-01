@@ -1,0 +1,119 @@
+# ============================================
+# Dependabot Configuration
+# Automatic dependency updates
+# ============================================
+version: 2
+
+updates:
+  # ============================================
+  # Frontend - npm packages
+  # ============================================
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "frontend"
+      - "automated"
+    commit-message:
+      prefix: "chore(deps)"
+    reviewers:
+      - "team-leads"
+    groups:
+      # Group minor and patch updates together
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Ignore major version updates for React (manual review needed)
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+
+  # ============================================
+  # Backend - NuGet packages
+  # ============================================
+  - package-ecosystem: "nuget"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "backend"
+      - "automated"
+    commit-message:
+      prefix: "chore(deps)"
+    reviewers:
+      - "team-leads"
+    groups:
+      # Group Microsoft packages
+      microsoft:
+        patterns:
+          - "Microsoft.*"
+          - "System.*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Group ASP.NET Core packages
+      aspnetcore:
+        patterns:
+          - "Microsoft.AspNetCore.*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ============================================
+  # GitHub Actions
+  # ============================================
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "ci/cd"
+      - "automated"
+    commit-message:
+      prefix: "ci(deps)"
+
+  # ============================================
+  # Docker base images
+  # ============================================
+  - package-ecosystem: "docker"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "docker"
+      - "frontend"
+    commit-message:
+      prefix: "chore(docker)"
+
+  - package-ecosystem: "docker"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "docker"
+      - "backend"
+    commit-message:
+      prefix: "chore(docker)"
