@@ -1,6 +1,6 @@
 # ============================================
-# CarAuction Backend - Production Dockerfile
-# Multi-stage build for optimized image size
+# CarAuction Backend - Railway Dockerfile
+# Optimized for Railway.app deployment with Swagger enabled
 # ============================================
 
 # Stage 1: Build
@@ -40,22 +40,25 @@ RUN adduser --disabled-password --gecos '' --uid 1000 appuser
 # Copy published files
 COPY --from=publish /app/publish .
 
-# Set ownership
-RUN chown -R appuser:appuser /app
+# Create uploads directory and set permissions
+RUN mkdir -p /app/wwwroot/uploads && \
+    mkdir -p /app/logs && \
+    chown -R appuser:appuser /app
 
 # Switch to non-root user
 USER appuser
 
-# Expose port
-EXPOSE 5000
+# Railway assigns PORT dynamically - we use 5000 as default
+ENV PORT=5000
+ENV ASPNETCORE_URLS=http://+:${PORT}
 
-# Environment variables
-ENV ASPNETCORE_URLS=http://+:5000
-ENV ASPNETCORE_ENVIRONMENT=Production
+# Enable Swagger in demo/staging (Railway deployment)
+# This is controlled by ENABLE_SWAGGER_IN_PRODUCTION env var
+ENV ENABLE_SWAGGER_IN_PRODUCTION=true
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:5000/health || exit 1
+# Health check using the dynamic port
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/health || exit 1
 
-# Entry point
-ENTRYPOINT ["dotnet", "CarAuction.API.dll"]
+# Entry point with shell to expand PORT variable
+ENTRYPOINT ["sh", "-c", "ASPNETCORE_URLS=http://+:${PORT} dotnet CarAuction.API.dll"]

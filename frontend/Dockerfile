@@ -1,6 +1,6 @@
 # ============================================
-# CarAuction Frontend - Production Dockerfile
-# Multi-stage build: Node (build) → Nginx (serve)
+# CarAuction Frontend - Railway Dockerfile
+# Optimized for Railway.app deployment
 # ============================================
 
 # ============================================
@@ -24,8 +24,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build arguments for environment variables
-ARG VITE_API_URL=http://localhost:5000/api
-ARG VITE_WS_URL=ws://localhost:5000/hubs/auction
+# These will be passed from Railway's environment variables
+ARG VITE_API_URL
+ARG VITE_WS_URL
 ARG VITE_ENV=production
 
 # Set environment variables for build
@@ -41,34 +42,32 @@ RUN npm run build
 # ============================================
 FROM nginx:1.25-alpine AS runner
 
-# Install curl for health checks
-RUN apk add --no-cache curl
+# Install curl for health checks and envsubst for config templating
+RUN apk add --no-cache curl gettext
 
 # Remove default nginx config
 RUN rm /etc/nginx/conf.d/default.conf
 
-# Copy custom nginx configuration
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
+# Copy nginx template configuration (uses $PORT)
+COPY nginx/nginx.railway.conf /etc/nginx/templates/default.conf.template
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Create non-root user for security
+# Create necessary directories with proper permissions
 RUN chown -R nginx:nginx /usr/share/nginx/html && \
     chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /var/log/nginx && \
-    touch /var/run/nginx.pid && \
-    chown -R nginx:nginx /var/run/nginx.pid
+    mkdir -p /var/run/nginx && \
+    chown -R nginx:nginx /var/run/nginx && \
+    chown -R nginx:nginx /etc/nginx/conf.d
 
-# Switch to non-root user
-USER nginx
-
-# Expose port 80
-EXPOSE 80
+# Railway provides PORT environment variable
+ENV PORT=80
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost/health || exit 1
+    CMD curl -f http://localhost:${PORT}/health || exit 1
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start script: substitute PORT in nginx config, then start nginx
+CMD envsubst '${PORT}' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'

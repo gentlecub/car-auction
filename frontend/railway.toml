@@ -1,20 +1,8 @@
-# ============================================
-# Railway Configuration - Frontend
-# ============================================
-# This file configures how Railway builds and deploys the frontend
-
 [build]
-# Use the Dockerfile in this directory
-builder = "dockerfile"
-dockerfilePath = "Dockerfile.railway"
+builder = "DOCKERFILE"
 
 [deploy]
-# Number of instances
-numReplicas = 1
-# Health check path
 healthcheckPath = "/health"
-# Timeout for health check (in seconds)
 healthcheckTimeout = 15
-# Restart policy
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
