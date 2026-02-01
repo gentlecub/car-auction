@@ -2,7 +2,7 @@
 # CarAuction Frontend - Railway Dockerfile
 # ============================================
 
-FROM node:20-alpine AS builder
+FROM node:25-alpine AS builder
 WORKDIR /app
 
 # Copy package files
@@ -27,7 +27,7 @@ ENV VITE_ENV=$VITE_ENV
 RUN npm run build
 
 # Stage 2: Serve with Node
-FROM node:20-alpine AS runner
+FROM node:25-alpine AS runner
 WORKDIR /app
 
 # Install serve globally
