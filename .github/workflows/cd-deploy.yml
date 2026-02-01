@@ -187,7 +187,7 @@ jobs:
 
     steps:
       - name: Deploy to Staging Server
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.STAGING_HOST }}
           username: ${{ secrets.STAGING_USER }}
@@ -239,7 +239,7 @@ jobs:
 
     steps:
       - name: Pre-deployment Backup
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USER }}
@@ -253,7 +253,7 @@ jobs:
             echo "Backup created: $BACKUP_FILE"
 
       - name: Deploy to Production
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USER }}
