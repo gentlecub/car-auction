@@ -52,7 +52,7 @@ export function CarDetail({ car, onBack, user, onLoginRequired }: CarDetailProps
           className="flex items-center gap-2 text-[#1E40AF] hover:text-[#1E40AF]/80 mb-6 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span className="font-medium">Volver a subastas</span>
+          <span className="font-medium">Back to auctions</span>
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -127,17 +127,17 @@ export function CarDetail({ car, onBack, user, onLoginRequired }: CarDetailProps
             <div className="lg:hidden mt-6 grid grid-cols-3 gap-4">
               <div className="bg-white rounded-lg p-4 text-center shadow-md">
                 <Calendar className="w-6 h-6 text-[#1E40AF] mx-auto mb-2" />
-                <p className="text-sm text-gray-600">Año</p>
+                <p className="text-sm text-gray-600">Year</p>
                 <p className="font-semibold text-[#111827]">{car.year}</p>
               </div>
               <div className="bg-white rounded-lg p-4 text-center shadow-md">
                 <Gauge className="w-6 h-6 text-[#1E40AF] mx-auto mb-2" />
-                <p className="text-sm text-gray-600">Kilometraje</p>
+                <p className="text-sm text-gray-600">Mileage</p>
                 <p className="font-semibold text-[#111827]">{car.mileage.toLocaleString()}</p>
               </div>
               <div className="bg-white rounded-lg p-4 text-center shadow-md">
                 <Award className="w-6 h-6 text-[#1E40AF] mx-auto mb-2" />
-                <p className="text-sm text-gray-600">Estado</p>
+                <p className="text-sm text-gray-600">Condition</p>
                 <p className="font-semibold text-[#111827]">{car.condition}</p>
               </div>
             </div>
@@ -164,9 +164,9 @@ export function CarDetail({ car, onBack, user, onLoginRequired }: CarDetailProps
                   </div>
                 </div>
                 <span className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                  car.condition === 'Nuevo' 
-                    ? 'bg-[#22C55E] text-white' 
-                    : car.condition === 'Certificado'
+                  car.condition === 'New'
+                    ? 'bg-[#22C55E] text-white'
+                    : car.condition === 'Certified'
                     ? 'bg-[#1E40AF] text-white'
                     : 'bg-gray-600 text-white'
                 }`}>
@@ -181,12 +181,12 @@ export function CarDetail({ car, onBack, user, onLoginRequired }: CarDetailProps
             <div className="bg-white rounded-xl shadow-md p-6">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Puja actual</p>
+                  <p className="text-sm text-gray-600 mb-1">Current bid</p>
                   <p className="text-4xl font-bold text-[#1E40AF]">
                     ${car.currentBid.toLocaleString()}
                   </p>
                   <p className="text-sm text-gray-600 mt-1">
-                    Precio inicial: ${car.startPrice.toLocaleString()}
+                    Starting price: ${car.startPrice.toLocaleString()}
                   </p>
                 </div>
                 <CountdownTimer endTime={car.endTime} size="large" />
@@ -197,20 +197,20 @@ export function CarDetail({ car, onBack, user, onLoginRequired }: CarDetailProps
                 <div className="p-6 bg-gray-50 border-2 border-gray-200 rounded-lg text-center">
                   <Lock className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                   <p className="text-gray-700 font-medium mb-3">
-                    Debes iniciar sesión para realizar pujas
+                    You must sign in to place bids
                   </p>
                   <button
                     onClick={onLoginRequired}
                     className="px-6 py-3 bg-[#1E40AF] hover:bg-[#1E40AF]/90 text-white font-semibold rounded-lg transition-colors"
                   >
-                    Iniciar Sesión
+                    Sign In
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleBid} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tu puja (mínimo ${minBid.toLocaleString()})
+                      Your bid (minimum ${minBid.toLocaleString()})
                     </label>
                     <div className="relative">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 font-medium">$</span>
@@ -229,7 +229,7 @@ export function CarDetail({ car, onBack, user, onLoginRequired }: CarDetailProps
                     disabled={bidAmount < minBid}
                     className="w-full py-4 bg-[#22C55E] hover:bg-[#22C55E]/90 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors"
                   >
-                    Realizar Puja
+                    Place Bid
                   </button>
                 </form>
               )}
@@ -242,7 +242,7 @@ export function CarDetail({ car, onBack, user, onLoginRequired }: CarDetailProps
                   className="mt-4 p-4 bg-[#22C55E]/10 border-2 border-[#22C55E] rounded-lg"
                 >
                   <p className="text-[#22C55E] font-medium text-center">
-                    ¡Puja realizada con éxito!
+                    Bid placed successfully!
                   </p>
                 </motion.div>
               )}
@@ -250,7 +250,7 @@ export function CarDetail({ car, onBack, user, onLoginRequired }: CarDetailProps
 
             {/* Features */}
             <div className="bg-white rounded-xl shadow-md p-6">
-              <h3 className="text-xl font-semibold text-[#111827] mb-4">Características</h3>
+              <h3 className="text-xl font-semibold text-[#111827] mb-4">Features</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {car.features.map((feature, index) => (
                   <div key={index} className="flex items-center gap-2">

@@ -9,7 +9,7 @@ export interface Car {
   image: string;
   images: string[];
   mileage: number;
-  condition: 'Nuevo' | 'Usado' | 'Certificado';
+  condition: 'New' | 'Used' | 'Certified';
   description: string;
   features: string[];
   status: 'active' | 'finished';
@@ -31,9 +31,9 @@ export interface User {
 }
 
 export const mockUsers: User[] = [
-  { id: 1, email: 'admin@autosubastas.com', password: 'admin123', name: 'Administrador' },
-  { id: 2, email: 'usuario@ejemplo.com', password: 'usuario123', name: 'Juan Pérez' },
-  { id: 3, email: 'maria@ejemplo.com', password: 'maria123', name: 'María García' },
+  { id: 1, email: 'admin@autoauctions.com', password: 'admin123', name: 'Administrator' },
+  { id: 2, email: 'user@example.com', password: 'user123', name: 'John Smith' },
+  { id: 3, email: 'mary@example.com', password: 'mary123', name: 'Mary Johnson' },
 ];
 
 export const mockCars: Car[] = [
@@ -52,7 +52,7 @@ export const mockCars: Car[] = [
       'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800',
     ],
     mileage: 15000,
-    condition: 'Certificado',
+    condition: 'Certified',
     description: 'Tesla Model 3 en excelente estado, con todas las revisiones al día. Incluye piloto automático y carga rápida.',
     features: ['Piloto Automático', 'Carga Rápida', 'Pantalla Touch 15"', 'Asientos de Cuero'],
     status: 'active',
@@ -71,7 +71,7 @@ export const mockCars: Car[] = [
       'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=800',
     ],
     mileage: 22000,
-    condition: 'Certificado',
+    condition: 'Certified',
     description: 'BMW Serie 5 con paquete deportivo M, interior de lujo y tecnología de última generación.',
     features: ['Paquete M Sport', 'Techo Panorámico', 'Sistema de Audio Harman Kardon', 'Asientos Ventilados'],
     status: 'active',
@@ -90,7 +90,7 @@ export const mockCars: Car[] = [
       'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800',
     ],
     mileage: 8000,
-    condition: 'Certificado',
+    condition: 'Certified',
     description: 'Mercedes-Benz GLE 350 SUV de lujo con tecnología AMG y máximo confort.',
     features: ['Paquete AMG', 'Asientos Masajeadores', 'Tracción 4MATIC', 'Cámara 360°'],
     status: 'active',
@@ -108,7 +108,7 @@ export const mockCars: Car[] = [
       'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800',
     ],
     mileage: 28000,
-    condition: 'Usado',
+    condition: 'Used',
     description: 'Audi A4 en excelente estado, mantenimiento completo y único dueño.',
     features: ['Virtual Cockpit', 'Quattro AWD', 'LED Matrix', 'Asientos Deportivos'],
     status: 'active',
@@ -127,7 +127,7 @@ export const mockCars: Car[] = [
       'https://images.unsplash.com/photo-1614200187524-dc4b892acf16?w=800',
     ],
     mileage: 3000,
-    condition: 'Nuevo',
+    condition: 'New',
     description: 'Porsche 911 Carrera nuevo, edición limitada con especificaciones deportivas.',
     features: ['Motor Turbo', 'Suspensión Deportiva', 'Sistema PCM', 'Escape Deportivo'],
     status: 'active',
@@ -145,7 +145,7 @@ export const mockCars: Car[] = [
       'https://images.unsplash.com/photo-1584345604476-8ec5f12d2923?w=800',
     ],
     mileage: 12000,
-    condition: 'Certificado',
+    condition: 'Certified',
     description: 'Ford Mustang GT con motor V8, edición especial.',
     features: ['Motor V8 5.0L', 'Performance Pack', 'Sistema SYNC', 'Escape Activo'],
     status: 'finished',
@@ -161,7 +161,7 @@ export const mockCars: Car[] = [
     image: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800',
     images: ['https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800'],
     mileage: 5000,
-    condition: 'Certificado',
+    condition: 'Certified',
     description: 'Toyota Camry Hybrid con tecnología híbrida avanzada y bajo consumo.',
     features: ['Sistema Híbrido', 'Cámara Reversa', 'Sensores de Parking', 'Bluetooth'],
     status: 'active',
@@ -177,7 +177,7 @@ export const mockCars: Car[] = [
     image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800',
     images: ['https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800'],
     mileage: 2000,
-    condition: 'Nuevo',
+    condition: 'New',
     description: 'Chevrolet Corvette C8, motor central V8, diseño deportivo revolucionario.',
     features: ['Motor V8 6.2L', 'Transmisión de 8 Velocidades', 'Suspensión Magnética', 'Performance Exhaust'],
     status: 'active',
@@ -193,7 +193,7 @@ export const mockCars: Car[] = [
     image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800',
     images: ['https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800'],
     mileage: 18000,
-    condition: 'Certificado',
+    condition: 'Certified',
     description: 'Lexus RX 350 SUV de lujo, confiabilidad japonesa con acabados premium.',
     features: ['Asientos de Cuero', 'Sistema Mark Levinson', 'Techo Panorámico', 'Safety Sense 2.0'],
     status: 'active',
@@ -209,7 +209,7 @@ export const mockCars: Car[] = [
     image: 'https://images.unsplash.com/photo-1590362891991-f776e747a588?w=800',
     images: ['https://images.unsplash.com/photo-1590362891991-f776e747a588?w=800'],
     mileage: 8500,
-    condition: 'Certificado',
+    condition: 'Certified',
     description: 'Honda Accord Sport, sedán deportivo con excelente rendimiento de combustible.',
     features: ['Turbo Engine', 'Honda Sensing', 'Apple CarPlay', 'Asientos Deportivos'],
     status: 'active',
@@ -225,7 +225,7 @@ export const mockCars: Car[] = [
     image: 'https://images.unsplash.com/photo-1617531653520-bd466c5d2c9e?w=800',
     images: ['https://images.unsplash.com/photo-1617531653520-bd466c5d2c9e?w=800'],
     mileage: 12000,
-    condition: 'Certificado',
+    condition: 'Certified',
     description: 'Mazda CX-5 Signature, SUV premium con tecnología Skyactiv.',
     features: ['Skyactiv-G Turbo', 'i-Activsense', 'Bose Audio', 'Asientos Nappa'],
     status: 'active',
@@ -241,7 +241,7 @@ export const mockCars: Car[] = [
     image: 'https://images.unsplash.com/photo-1622353219448-46a5c61a72b6?w=800',
     images: ['https://images.unsplash.com/photo-1622353219448-46a5c61a72b6?w=800'],
     mileage: 20000,
-    condition: 'Usado',
+    condition: 'Used',
     description: 'Volkswagen Tiguan R-Line, SUV compacto con línea deportiva.',
     features: ['Paquete R-Line', 'Digital Cockpit', 'Frenova App-Connect', '4Motion AWD'],
     status: 'active',
@@ -257,7 +257,7 @@ export const mockCars: Car[] = [
     image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800',
     images: ['https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800'],
     mileage: 500,
-    condition: 'Nuevo',
+    condition: 'New',
     description: 'Nissan GT-R Nismo, superdeportivo japonés de edición especial.',
     features: ['Motor V6 Twin-Turbo', 'Aerodinámica Nismo', 'Suspensión Bilstein', 'Frenos Brembo'],
     status: 'active',
@@ -273,7 +273,7 @@ export const mockCars: Car[] = [
     image: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800',
     images: ['https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800'],
     mileage: 16000,
-    condition: 'Certificado',
+    condition: 'Certified',
     description: 'Subaru WRX STI, deportivo rally con tracción AWD y alto rendimiento.',
     features: ['Turbo Boxer Engine', 'Symmetrical AWD', 'Brembo Brakes', 'Recaro Seats'],
     status: 'active',
@@ -289,7 +289,7 @@ export const mockCars: Car[] = [
     image: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=800',
     images: ['https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=800'],
     mileage: 3000,
-    condition: 'Nuevo',
+    condition: 'New',
     description: 'Hyundai Ioniq 5 eléctrico, diseño futurista con ultra rápida carga.',
     features: ['Motor Eléctrico Dual', 'Carga Ultra Rápida 800V', 'V2L', 'Augmented Reality HUD'],
     status: 'active',
@@ -305,7 +305,7 @@ export const mockCars: Car[] = [
     image: 'https://images.unsplash.com/photo-1542362567-b07e54358753?w=800',
     images: ['https://images.unsplash.com/photo-1542362567-b07e54358753?w=800'],
     mileage: 14000,
-    condition: 'Certificado',
+    condition: 'Certified',
     description: 'Kia Stinger GT, Gran Turismo deportivo con diseño europeo.',
     features: ['Motor V6 Twin-Turbo', 'Limited Slip Diff', 'Harman Kardon', 'Adaptive Suspension'],
     status: 'active',
@@ -313,11 +313,11 @@ export const mockCars: Car[] = [
 ];
 
 export const mockBids: Bid[] = [
-  { id: 1, carId: 1, userName: 'Juan Pérez', amount: 45000, timestamp: new Date(Date.now() - 5 * 60 * 1000) },
-  { id: 2, carId: 1, userName: 'María García', amount: 43500, timestamp: new Date(Date.now() - 15 * 60 * 1000) },
-  { id: 3, carId: 1, userName: 'Carlos López', amount: 42000, timestamp: new Date(Date.now() - 30 * 60 * 1000) },
-  { id: 4, carId: 2, userName: 'Ana Martínez', amount: 52000, timestamp: new Date(Date.now() - 10 * 60 * 1000) },
-  { id: 5, carId: 2, userName: 'Roberto Silva', amount: 50000, timestamp: new Date(Date.now() - 25 * 60 * 1000) },
+  { id: 1, carId: 1, userName: 'John Smith', amount: 45000, timestamp: new Date(Date.now() - 5 * 60 * 1000) },
+  { id: 2, carId: 1, userName: 'Mary Johnson', amount: 43500, timestamp: new Date(Date.now() - 15 * 60 * 1000) },
+  { id: 3, carId: 1, userName: 'Carlos Lopez', amount: 42000, timestamp: new Date(Date.now() - 30 * 60 * 1000) },
+  { id: 4, carId: 2, userName: 'Anna Martinez', amount: 52000, timestamp: new Date(Date.now() - 10 * 60 * 1000) },
+  { id: 5, carId: 2, userName: 'Robert Silva', amount: 50000, timestamp: new Date(Date.now() - 25 * 60 * 1000) },
   { id: 6, carId: 3, userName: 'Laura Torres', amount: 68000, timestamp: new Date(Date.now() - 8 * 60 * 1000) },
 ];
 
@@ -328,18 +328,18 @@ export const adminStats = {
   totalUsers: 245,
   totalRevenue: 425000,
   auctionsThisMonth: [
-    { month: 'Ene', auctions: 12 },
+    { month: 'Jan', auctions: 12 },
     { month: 'Feb', auctions: 19 },
     { month: 'Mar', auctions: 15 },
-    { month: 'Abr', auctions: 22 },
+    { month: 'Apr', auctions: 22 },
     { month: 'May', auctions: 28 },
     { month: 'Jun', auctions: 24 },
   ],
   userGrowth: [
-    { month: 'Ene', users: 120 },
+    { month: 'Jan', users: 120 },
     { month: 'Feb', users: 145 },
     { month: 'Mar', users: 167 },
-    { month: 'Abr', users: 189 },
+    { month: 'Apr', users: 189 },
     { month: 'May', users: 215 },
     { month: 'Jun', users: 245 },
   ],

@@ -53,7 +53,7 @@ export function CountdownTimer({ endTime, size = 'small' }: CountdownTimerProps)
       }`}>
         <Clock className="w-4 h-4" />
         <span className="text-sm font-medium">
-          {isExpired ? 'Finalizada' : `${timeLeft.hours}h ${timeLeft.minutes}m ${timeLeft.seconds}s`}
+          {isExpired ? 'Ended' : `${timeLeft.hours}h ${timeLeft.minutes}m ${timeLeft.seconds}s`}
         </span>
       </div>
     );
@@ -70,21 +70,21 @@ export function CountdownTimer({ endTime, size = 'small' }: CountdownTimerProps)
       <div className="flex items-center gap-2 mb-3">
         <Clock className={`w-6 h-6 ${isExpired ? 'text-gray-600' : 'text-white'}`} />
         <span className={`text-sm font-medium ${isExpired ? 'text-gray-600' : 'text-white/80'}`}>
-          {isExpired ? 'Subasta finalizada' : 'Tiempo restante'}
+          {isExpired ? 'Auction ended' : 'Time remaining'}
         </span>
       </div>
       <div className="flex gap-3">
         {!isExpired && timeLeft.days > 0 && (
           <div className="flex flex-col items-center">
             <span className="text-3xl font-bold text-white">{String(timeLeft.days).padStart(2, '0')}</span>
-            <span className="text-xs text-white/70 mt-1">días</span>
+            <span className="text-xs text-white/70 mt-1">days</span>
           </div>
         )}
         <div className="flex flex-col items-center">
           <span className={`text-3xl font-bold ${isExpired ? 'text-gray-600' : 'text-white'}`}>
             {String(timeLeft.hours).padStart(2, '0')}
           </span>
-          <span className={`text-xs mt-1 ${isExpired ? 'text-gray-600' : 'text-white/70'}`}>horas</span>
+          <span className={`text-xs mt-1 ${isExpired ? 'text-gray-600' : 'text-white/70'}`}>hours</span>
         </div>
         <span className={`text-3xl font-bold ${isExpired ? 'text-gray-600' : 'text-white'}`}>:</span>
         <div className="flex flex-col items-center">
@@ -98,7 +98,7 @@ export function CountdownTimer({ endTime, size = 'small' }: CountdownTimerProps)
           <span className={`text-3xl font-bold ${isExpired ? 'text-gray-600' : 'text-white'}`}>
             {String(timeLeft.seconds).padStart(2, '0')}
           </span>
-          <span className={`text-xs mt-1 ${isExpired ? 'text-gray-600' : 'text-white/70'}`}>seg</span>
+          <span className={`text-xs mt-1 ${isExpired ? 'text-gray-600' : 'text-white/70'}`}>sec</span>
         </div>
       </div>
     </div>

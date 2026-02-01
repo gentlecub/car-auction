@@ -23,7 +23,7 @@ export function Header({ currentView, onNavigate, user, onLogout }: HeaderProps)
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
             <Car className="w-8 h-8 text-[#22C55E]" />
-            <span className="text-xl font-bold">AutoSubastas</span>
+            <span className="text-xl font-bold">AutoAuctions</span>
           </button>
 
           {/* Desktop Navigation */}
@@ -36,7 +36,7 @@ export function Header({ currentView, onNavigate, user, onLogout }: HeaderProps)
                   : 'text-gray-300 hover:text-white'
               }`}
             >
-              Subastas
+              Auctions
             </button>
             <button
               onClick={() => onNavigate('admin')}
@@ -47,7 +47,7 @@ export function Header({ currentView, onNavigate, user, onLogout }: HeaderProps)
               }`}
             >
               <LayoutDashboard className="w-4 h-4" />
-              Panel Admin
+              Admin Panel
             </button>
 
             {/* User menu */}
@@ -70,7 +70,7 @@ export function Header({ currentView, onNavigate, user, onLogout }: HeaderProps)
                       className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 flex items-center gap-2"
                     >
                       <LogOut className="w-4 h-4" />
-                      Cerrar Sesión
+                      Log Out
                     </button>
                   </div>
                 )}
@@ -78,7 +78,7 @@ export function Header({ currentView, onNavigate, user, onLogout }: HeaderProps)
             ) : (
               <div className="flex items-center gap-2 px-4 py-2 bg-gray-700 rounded-lg">
                 <User className="w-4 h-4" />
-                <span className="text-sm">Invitado</span>
+                <span className="text-sm">Guest</span>
               </div>
             )}
           </div>
@@ -110,13 +110,13 @@ export function Header({ currentView, onNavigate, user, onLogout }: HeaderProps)
                   className="w-full px-3 py-2 bg-white/20 hover:bg-white/30 rounded text-sm flex items-center gap-2 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
-                  Cerrar Sesión
+                  Log Out
                 </button>
               </div>
             ) : (
               <div className="p-4 bg-gray-700 rounded-lg mb-2 flex items-center gap-2">
                 <User className="w-5 h-5" />
-                <span>Invitado</span>
+                <span>Guest</span>
               </div>
             )}
 
@@ -131,7 +131,7 @@ export function Header({ currentView, onNavigate, user, onLogout }: HeaderProps)
                   : 'text-gray-300 hover:bg-gray-800'
               }`}
             >
-              Subastas
+              Auctions
             </button>
             <button
               onClick={() => {
@@ -145,7 +145,7 @@ export function Header({ currentView, onNavigate, user, onLogout }: HeaderProps)
               }`}
             >
               <LayoutDashboard className="w-4 h-4" />
-              Panel Admin
+              Admin Panel
             </button>
           </nav>
         )}

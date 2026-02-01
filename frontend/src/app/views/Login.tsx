@@ -24,7 +24,7 @@ export function Login({ onLogin, onSkip }: LoginProps) {
     if (user) {
       onLogin(user);
     } else {
-      setError('Credenciales inválidas. Por favor, intenta de nuevo.');
+      setError('Invalid credentials. Please try again.');
     }
   };
 
@@ -45,8 +45,8 @@ export function Login({ onLogin, onSkip }: LoginProps) {
               <Car className="w-10 h-10 text-[#1E40AF]" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-white mb-2">AutoSubastas</h1>
-          <p className="text-white/80">Inicia sesión para participar en las subastas</p>
+          <h1 className="text-4xl font-bold text-white mb-2">AutoAuctions</h1>
+          <p className="text-white/80">Sign in to participate in auctions</p>
         </div>
 
         {/* Login card */}
@@ -55,7 +55,7 @@ export function Login({ onLogin, onSkip }: LoginProps) {
             {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Correo Electrónico
+                Email
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -63,7 +63,7 @@ export function Login({ onLogin, onSkip }: LoginProps) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="tu@email.com"
+                  placeholder="you@email.com"
                   className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent outline-none"
                   required
                 />
@@ -73,7 +73,7 @@ export function Login({ onLogin, onSkip }: LoginProps) {
             {/* Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Contraseña
+                Password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -101,7 +101,7 @@ export function Login({ onLogin, onSkip }: LoginProps) {
               type="submit"
               className="w-full py-3 bg-[#1E40AF] hover:bg-[#1E40AF]/90 text-white font-semibold rounded-lg transition-colors shadow-md"
             >
-              Iniciar Sesión
+              Sign In
             </button>
           </form>
 
@@ -111,13 +111,13 @@ export function Login({ onLogin, onSkip }: LoginProps) {
               onClick={() => setShowDemo(!showDemo)}
               className="w-full text-sm text-[#1E40AF] hover:underline"
             >
-              {showDemo ? 'Ocultar' : 'Ver'} cuentas de demostración
+              {showDemo ? 'Hide' : 'Show'} demo accounts
             </button>
 
             {showDemo && (
               <div className="mt-4 p-4 bg-[#F9FAFB] rounded-lg space-y-3">
                 <p className="text-sm font-medium text-gray-700 mb-2">
-                  Cuentas de prueba:
+                  Test accounts:
                 </p>
                 {mockUsers.map((user) => (
                   <div
@@ -128,14 +128,14 @@ export function Login({ onLogin, onSkip }: LoginProps) {
                       <p className="font-medium text-gray-900">{user.name}</p>
                       <p className="text-gray-600">{user.email}</p>
                       <p className="text-gray-500 text-xs mt-1">
-                        Contraseña: {user.password}
+                        Password: {user.password}
                       </p>
                     </div>
                     <button
                       onClick={() => handleDemoLogin(user.email)}
                       className="px-3 py-1.5 bg-[#22C55E] hover:bg-[#22C55E]/90 text-white text-sm font-medium rounded transition-colors"
                     >
-                      Usar
+                      Use
                     </button>
                   </div>
                 ))}
@@ -149,7 +149,7 @@ export function Login({ onLogin, onSkip }: LoginProps) {
               onClick={onSkip}
               className="w-full py-3 text-gray-600 hover:text-gray-800 font-medium transition-colors"
             >
-              Continuar como invitado
+              Continue as guest
             </button>
           </div>
         </div>
@@ -157,7 +157,7 @@ export function Login({ onLogin, onSkip }: LoginProps) {
         {/* Footer info */}
         <div className="mt-6 text-center">
           <p className="text-white/70 text-sm">
-            Esta es una aplicación de demostración con datos simulados
+            This is a demo application with simulated data
           </p>
         </div>
       </div>

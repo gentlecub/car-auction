@@ -12,15 +12,15 @@ export function AdminPanel() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-[#111827] mb-2">Panel de Administración</h1>
-            <p className="text-gray-600">Gestiona subastas y revisa estadísticas</p>
+            <h1 className="text-3xl font-bold text-[#111827] mb-2">Admin Panel</h1>
+            <p className="text-gray-600">Manage auctions and review statistics</p>
           </div>
           <button
             onClick={() => setShowAddCarModal(true)}
             className="flex items-center gap-2 px-6 py-3 bg-[#22C55E] hover:bg-[#22C55E]/90 text-white font-semibold rounded-lg transition-colors shadow-md"
           >
             <Plus className="w-5 h-5" />
-            Agregar Carro
+            Add Car
           </button>
         </div>
 
@@ -33,7 +33,7 @@ export function AdminPanel() {
               </div>
               <span className="text-sm font-medium text-[#22C55E]">+12%</span>
             </div>
-            <p className="text-gray-600 text-sm mb-1">Subastas Activas</p>
+            <p className="text-gray-600 text-sm mb-1">Active Auctions</p>
             <p className="text-3xl font-bold text-[#111827]">{adminStats.activeAuctions}</p>
           </div>
 
@@ -44,7 +44,7 @@ export function AdminPanel() {
               </div>
               <span className="text-sm font-medium text-[#22C55E]">+18%</span>
             </div>
-            <p className="text-gray-600 text-sm mb-1">Usuarios Totales</p>
+            <p className="text-gray-600 text-sm mb-1">Total Users</p>
             <p className="text-3xl font-bold text-[#111827]">{adminStats.totalUsers}</p>
           </div>
 
@@ -55,7 +55,7 @@ export function AdminPanel() {
               </div>
               <span className="text-sm font-medium text-[#22C55E]">+25%</span>
             </div>
-            <p className="text-gray-600 text-sm mb-1">Ingresos Totales</p>
+            <p className="text-gray-600 text-sm mb-1">Total Revenue</p>
             <p className="text-3xl font-bold text-[#111827]">${(adminStats.totalRevenue / 1000).toFixed(0)}k</p>
           </div>
 
@@ -64,9 +64,9 @@ export function AdminPanel() {
               <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
                 <CheckCircle className="w-6 h-6 text-gray-600" />
               </div>
-              <span className="text-sm font-medium text-gray-500">Este mes</span>
+              <span className="text-sm font-medium text-gray-500">This month</span>
             </div>
-            <p className="text-gray-600 text-sm mb-1">Subastas Finalizadas</p>
+            <p className="text-gray-600 text-sm mb-1">Finished Auctions</p>
             <p className="text-3xl font-bold text-[#111827]">{adminStats.finishedAuctions}</p>
           </div>
         </div>
@@ -75,7 +75,7 @@ export function AdminPanel() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Auctions Chart */}
           <div className="bg-white rounded-xl shadow-md p-6">
-            <h3 className="text-xl font-semibold text-[#111827] mb-6">Subastas por Mes</h3>
+            <h3 className="text-xl font-semibold text-[#111827] mb-6">Auctions by Month</h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={adminStats.auctionsThisMonth}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
@@ -95,7 +95,7 @@ export function AdminPanel() {
 
           {/* Users Chart */}
           <div className="bg-white rounded-xl shadow-md p-6">
-            <h3 className="text-xl font-semibold text-[#111827] mb-6">Crecimiento de Usuarios</h3>
+            <h3 className="text-xl font-semibold text-[#111827] mb-6">User Growth</h3>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={adminStats.userGrowth}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
@@ -123,7 +123,7 @@ export function AdminPanel() {
         {/* Auctions Table */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="p-6 border-b border-gray-200">
-            <h3 className="text-xl font-semibold text-[#111827]">Todas las Subastas</h3>
+            <h3 className="text-xl font-semibold text-[#111827]">All Auctions</h3>
           </div>
           
           {/* Desktop Table */}
@@ -131,12 +131,12 @@ export function AdminPanel() {
             <table className="w-full">
               <thead className="bg-[#F9FAFB]">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Vehículo</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Año</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Estado</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Puja Actual</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Estado</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Acción</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Vehicle</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Year</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Condition</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Current Bid</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Status</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -158,9 +158,9 @@ export function AdminPanel() {
                     <td className="px-6 py-4 text-gray-700">{car.year}</td>
                     <td className="px-6 py-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        car.condition === 'Nuevo' 
-                          ? 'bg-[#22C55E]/10 text-[#22C55E]' 
-                          : car.condition === 'Certificado'
+                        car.condition === 'New'
+                          ? 'bg-[#22C55E]/10 text-[#22C55E]'
+                          : car.condition === 'Certified'
                           ? 'bg-[#1E40AF]/10 text-[#1E40AF]'
                           : 'bg-gray-100 text-gray-700'
                       }`}>
@@ -174,18 +174,18 @@ export function AdminPanel() {
                       {car.status === 'active' ? (
                         <span className="flex items-center gap-1 text-[#22C55E]">
                           <CheckCircle className="w-4 h-4" />
-                          Activa
+                          Active
                         </span>
                       ) : (
                         <span className="flex items-center gap-1 text-gray-500">
                           <XCircle className="w-4 h-4" />
-                          Finalizada
+                          Finished
                         </span>
                       )}
                     </td>
                     <td className="px-6 py-4">
                       <button className="text-[#1E40AF] hover:text-[#1E40AF]/80 font-medium">
-                        Ver detalles
+                        View details
                       </button>
                     </td>
                   </tr>
@@ -208,9 +208,9 @@ export function AdminPanel() {
                     <p className="font-medium text-[#111827] mb-1">{car.brand} {car.model}</p>
                     <p className="text-sm text-gray-600 mb-2">{car.year} • {car.mileage.toLocaleString()} km</p>
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      car.condition === 'Nuevo' 
-                        ? 'bg-[#22C55E]/10 text-[#22C55E]' 
-                        : car.condition === 'Certificado'
+                      car.condition === 'New'
+                        ? 'bg-[#22C55E]/10 text-[#22C55E]'
+                        : car.condition === 'Certified'
                         ? 'bg-[#1E40AF]/10 text-[#1E40AF]'
                         : 'bg-gray-100 text-gray-700'
                     }`}>
@@ -220,18 +220,18 @@ export function AdminPanel() {
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Puja actual</p>
+                    <p className="text-sm text-gray-600">Current bid</p>
                     <p className="font-semibold text-[#1E40AF]">${car.currentBid.toLocaleString()}</p>
                   </div>
                   {car.status === 'active' ? (
                     <span className="flex items-center gap-1 text-[#22C55E] text-sm">
                       <CheckCircle className="w-4 h-4" />
-                      Activa
+                      Active
                     </span>
                   ) : (
                     <span className="flex items-center gap-1 text-gray-500 text-sm">
                       <XCircle className="w-4 h-4" />
-                      Finalizada
+                      Finished
                     </span>
                   )}
                 </div>
@@ -245,15 +245,15 @@ export function AdminPanel() {
       {showAddCarModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-xl max-w-md w-full p-6">
-            <h3 className="text-xl font-semibold text-[#111827] mb-4">Agregar Nuevo Carro</h3>
+            <h3 className="text-xl font-semibold text-[#111827] mb-4">Add New Car</h3>
             <p className="text-gray-600 mb-6">
-              Esta es una vista de demostración. En producción, aquí se mostraría un formulario completo para agregar un nuevo vehículo.
+              This is a demo view. In production, a complete form to add a new vehicle would be displayed here.
             </p>
             <button
               onClick={() => setShowAddCarModal(false)}
               className="w-full px-4 py-3 bg-[#1E40AF] hover:bg-[#1E40AF]/90 text-white font-semibold rounded-lg transition-colors"
             >
-              Cerrar
+              Close
             </button>
           </div>
         </div>

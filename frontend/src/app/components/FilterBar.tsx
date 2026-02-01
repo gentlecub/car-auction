@@ -42,13 +42,13 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* Brand */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Marca</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Brand</label>
         <select
           value={filters.brand}
           onChange={(e) => handleFilterChange('brand', e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent bg-white"
         >
-          <option value="">Todas las marcas</option>
+          <option value="">All brands</option>
           <option value="Tesla">Tesla</option>
           <option value="BMW">BMW</option>
           <option value="Mercedes-Benz">Mercedes-Benz</option>
@@ -60,47 +60,47 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
 
       {/* Max Price */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Precio máximo</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Max price</label>
         <select
           value={filters.maxPrice}
           onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent bg-white"
         >
-          <option value="">Sin límite</option>
-          <option value="50000">Hasta $50,000</option>
-          <option value="75000">Hasta $75,000</option>
-          <option value="100000">Hasta $100,000</option>
-          <option value="150000">Hasta $150,000</option>
+          <option value="">No limit</option>
+          <option value="50000">Up to $50,000</option>
+          <option value="75000">Up to $75,000</option>
+          <option value="100000">Up to $100,000</option>
+          <option value="150000">Up to $150,000</option>
         </select>
       </div>
 
       {/* Condition */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Condition</label>
         <select
           value={filters.condition}
           onChange={(e) => handleFilterChange('condition', e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent bg-white"
         >
-          <option value="">Todos</option>
-          <option value="Nuevo">Nuevo</option>
-          <option value="Certificado">Certificado</option>
-          <option value="Usado">Usado</option>
+          <option value="">All</option>
+          <option value="New">New</option>
+          <option value="Certified">Certified</option>
+          <option value="Used">Used</option>
         </select>
       </div>
 
       {/* Sort */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Ordenar por</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Sort by</label>
         <select
           value={filters.sortBy}
           onChange={(e) => handleFilterChange('sortBy', e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1E40AF] focus:border-transparent bg-white"
         >
-          <option value="endingSoon">Terminan pronto</option>
-          <option value="priceLow">Precio: Menor a Mayor</option>
-          <option value="priceHigh">Precio: Mayor a Menor</option>
-          <option value="newest">Más recientes</option>
+          <option value="endingSoon">Ending soon</option>
+          <option value="priceLow">Price: Low to High</option>
+          <option value="priceHigh">Price: High to Low</option>
+          <option value="newest">Newest</option>
         </select>
       </div>
     </div>
@@ -116,7 +116,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
         >
           <span className="flex items-center gap-2 font-medium text-[#111827]">
             <SlidersHorizontal className="w-5 h-5" />
-            Filtros
+            Filters
           </span>
           {showMobileFilters ? <X className="w-5 h-5" /> : <SlidersHorizontal className="w-5 h-5" />}
         </button>
@@ -127,7 +127,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
               onClick={resetFilters}
               className="mt-4 w-full px-4 py-2 text-sm text-[#EF4444] hover:bg-red-50 rounded-lg transition-colors"
             >
-              Limpiar filtros
+              Clear filters
             </button>
           </div>
         )}
@@ -144,7 +144,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
             onClick={resetFilters}
             className="text-sm text-[#EF4444] hover:underline"
           >
-            Limpiar filtros
+            Clear filters
           </button>
         </div>
         <FilterContent />

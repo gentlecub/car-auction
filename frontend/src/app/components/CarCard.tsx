@@ -24,9 +24,9 @@ export function CarCard({ car, onClick }: CarCardProps) {
         />
         <div className="absolute top-3 right-3">
           <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-            car.condition === 'Nuevo' 
-              ? 'bg-[#22C55E] text-white' 
-              : car.condition === 'Certificado'
+            car.condition === 'New'
+              ? 'bg-[#22C55E] text-white'
+              : car.condition === 'Certified'
               ? 'bg-[#1E40AF] text-white'
               : 'bg-gray-600 text-white'
           }`}>
@@ -46,7 +46,7 @@ export function CarCard({ car, onClick }: CarCardProps) {
 
         {/* Price */}
         <div className="mb-4">
-          <p className="text-sm text-gray-600 mb-1">Puja actual</p>
+          <p className="text-sm text-gray-600 mb-1">Current bid</p>
           <div className="flex items-end gap-2">
             <span className="text-3xl font-bold text-[#1E40AF]">
               ${car.currentBid.toLocaleString()}

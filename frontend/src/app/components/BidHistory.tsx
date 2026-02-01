@@ -14,13 +14,13 @@ export function BidHistory({ bids }: BidHistoryProps) {
     const diff = now.getTime() - date.getTime();
     const minutes = Math.floor(diff / 60000);
     
-    if (minutes < 1) return 'Hace un momento';
-    if (minutes === 1) return 'Hace 1 minuto';
-    if (minutes < 60) return `Hace ${minutes} minutos`;
-    
+    if (minutes < 1) return 'Just now';
+    if (minutes === 1) return '1 minute ago';
+    if (minutes < 60) return `${minutes} minutes ago`;
+
     const hours = Math.floor(minutes / 60);
-    if (hours === 1) return 'Hace 1 hora';
-    if (hours < 24) return `Hace ${hours} horas`;
+    if (hours === 1) return '1 hour ago';
+    if (hours < 24) return `${hours} hours ago`;
     
     return date.toLocaleDateString();
   };
@@ -29,11 +29,11 @@ export function BidHistory({ bids }: BidHistoryProps) {
     <div className="bg-white rounded-xl shadow-md p-6">
       <div className="flex items-center gap-2 mb-6">
         <TrendingUp className="w-6 h-6 text-[#1E40AF]" />
-        <h3 className="text-xl font-semibold text-[#111827]">Historial de Pujas</h3>
+        <h3 className="text-xl font-semibold text-[#111827]">Bid History</h3>
       </div>
 
       {sortedBids.length === 0 ? (
-        <p className="text-gray-500 text-center py-8">Aún no hay pujas en esta subasta</p>
+        <p className="text-gray-500 text-center py-8">No bids yet on this auction</p>
       ) : (
         <div className="space-y-3 max-h-96 overflow-y-auto">
           {sortedBids.map((bid, index) => (
@@ -65,7 +65,7 @@ export function BidHistory({ bids }: BidHistoryProps) {
                     ${bid.amount.toLocaleString()}
                   </p>
                   {index === 0 && (
-                    <p className="text-xs text-[#22C55E] font-medium mt-1">Puja más alta</p>
+                    <p className="text-xs text-[#22C55E] font-medium mt-1">Highest bid</p>
                   )}
                 </div>
               </div>

@@ -80,10 +80,10 @@ export function Home({ onCarSelect }: HomeProps) {
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] rounded-2xl p-8 md:p-12 mb-8 text-white">
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
-            Subastas de Carros en Línea
+            Online Car Auctions
           </h1>
           <p className="text-lg md:text-xl text-white/90 mb-6">
-            Encuentra tu próximo vehículo al mejor precio. Subastas en tiempo real.
+            Find your next vehicle at the best price. Real-time auctions.
           </p>
           
           {/* Search bar */}
@@ -92,7 +92,7 @@ export function Home({ onCarSelect }: HomeProps) {
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Buscar por marca o modelo..."
+                placeholder="Search by brand or model..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
@@ -110,10 +110,10 @@ export function Home({ onCarSelect }: HomeProps) {
         {/* Results count and pagination info */}
         <div className="mb-6 flex items-center justify-between flex-wrap gap-2">
           <p className="text-gray-600">
-            <span className="font-semibold text-[#111827]">{filteredCars.length}</span> subasta{filteredCars.length !== 1 ? 's' : ''} activa{filteredCars.length !== 1 ? 's' : ''}
+            <span className="font-semibold text-[#111827]">{filteredCars.length}</span> active auction{filteredCars.length !== 1 ? 's' : ''}
             {totalPages > 1 && (
               <span className="ml-2">
-                • Página {currentPage} de {totalPages}
+                • Page {currentPage} of {totalPages}
               </span>
             )}
           </p>
@@ -122,7 +122,7 @@ export function Home({ onCarSelect }: HomeProps) {
         {/* Car Grid */}
         {paginatedCars.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-gray-500 text-lg">No se encontraron subastas con los filtros seleccionados</p>
+            <p className="text-gray-500 text-lg">No auctions found with the selected filters</p>
           </div>
         ) : (
           <>
